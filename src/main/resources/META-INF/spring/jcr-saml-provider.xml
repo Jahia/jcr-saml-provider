@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:osgi="http://www.eclipse.org/gemini/blueprint/schema/blueprint"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.eclipse.org/gemini/blueprint/schema/blueprint http://www.eclipse.org/gemini/blueprint/schema/blueprint/gemini-blueprint.xsd">
+     
+    <osgi:reference id="saml2SettingsService" interface="org.jahia.modules.saml2.service.SamlUserProviderManager" availability="mandatory"/>
+
+    <bean id="jcrSamlUserProviderImpl" class="org.jahia.modules.saml2.impl.SamlUserProviderImpl" init-method="start" destroy-method="stop">
+        <property name="samlUserProviderManager" ref="saml2SettingsService"/>
+    </bean>
+
+    <osgi:service ref="jcrSamlUserProviderImpl" interface="org.jahia.modules.saml2.service.SamlUserProvider">
+        <osgi:service-properties>
+            <entry key="samlUserProviderName" value="jcrSamlUserProvider"/>
+        </osgi:service-properties>
+    </osgi:service>
+</beans>
